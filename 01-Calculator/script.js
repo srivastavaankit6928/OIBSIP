@@ -10,35 +10,45 @@ const enterBtn = document.getElementById('enter');
 const rootBtn = document.getElementById('root');
 
 let lastKeyDownEvent = false;
+let lastClickEvent = false;
+let isClickHappenBefore = false;
+let lastHistory;
 
 numBtn.forEach(button =>{
     button.addEventListener('click',()=>{
         const number = button.getAttribute('data-number');
-        (lastKeyDownEvent) && ((result.value = '' )|| (history.value = ''));
+        (lastClickEvent) && ((result.value = '' )|| (history.value = ''));
         result.value += number;
-        lastKeyDownEvent = false;
+        lastClickEvent = false;
+        isClickHappenBefore = true;
     });
 });
 
 operatorBtn.forEach(btn => {
     btn.addEventListener('click',()=>{
         const operator = btn.getAttribute('data-operator');
-        if(lastKeyDownEvent){
+        if(lastClickEvent){
             history.value = '';
             history.value = `${result.value}${operator}` ;
             result.value = '';
-            lastKeyDownEvent = false;
+            lastClickEvent = false;
             return;
         }
-
+        if(result.value==='') return;
         history.value += `${result.value}${operator}`;
         result.value ='';
+        isClickHappenBefore = true;
+
     });
 });
 
+function appendDot(){
+    if(result.value.includes('.')) return;
+    result.value += '.';
+}
+
 allClearBtn.addEventListener('click',()=>{
-    result.value ='';
-    history.value='';
+    location.reload();
 });
 
 escapeBtn.addEventListener('click',()=>{
@@ -60,10 +70,11 @@ rootBtn.addEventListener('click',()=>{
 });
 
 enterBtn.addEventListener('click',()=>{
-    lastKeyDownEvent = true;
+    lastClickEvent = true;
+    if(result.value === '') return;
     history.value += `${result.value}`;
     result.value = eval(history.value);
-    history.value += '';
+
 });
 
 
@@ -72,14 +83,24 @@ function handleKeydown(event) {
     const allowedKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'];
     const operatorKeys = ['+', '-', '/', '*'];
 
-    if(event.key === 'Enter'){
+    if(isClickHappenBefore){
+        history.value = '';
+        result.value = '';
+        isClickHappenBefore=false;
+        location.reload();
+    }
+
+    if(event.key === 'Enter' && lastHistory!== history.value && history.value!==''){
         lastKeyDownEvent = true;
         history.value += `${result.value}`;
         result.value = eval(history.value);
-        history.value += '';
+        lastHistory = history.value;
+        isClickHappenBefore = false;
+        // history.value = '';
     }
 
     if (allowedKeys.includes(event.key)) {
+        if(event.key === '.'  && result.value.includes('.')) return;
         (lastKeyDownEvent) && ((result.value = '' )|| (history.value = ''));
         result.value += event.key;
         lastKeyDownEvent = false;
@@ -94,6 +115,7 @@ function handleKeydown(event) {
             return;
         }
 
+        if(result.value==='') return;
         history.value += `${result.value}${event.key}`;
         result.value ='';
     }
@@ -102,8 +124,7 @@ function handleKeydown(event) {
     result.value = result.value.toString().slice(0,-1);
 
     if(event.key === 'Escape'){
-        result.value ='';
-        history.value='';
+        location.reload();
     }
 }
 

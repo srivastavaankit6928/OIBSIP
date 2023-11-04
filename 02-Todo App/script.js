@@ -41,8 +41,12 @@ function closeModal (){
 inputField.focus();
 
 function handleAddItem(){
-    if(inputField.value === ""){
-        alert("Please Enter Any Task")
+    const inputValue = inputField.value.trim();
+
+    if (inputValue === "") {
+        alert("Please enter any task");
+    } else if (/^\s*[.]+\s*$/.test(inputValue)) {
+        alert("Task cannot be just dots");
     }else{
         const date = new Date();
         const time = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
@@ -73,6 +77,9 @@ function renderLi(taskArr){
 
     taskArr.forEach(el => {
         const html = `<li id="${el.date}">
+        <div class="checkbox">
+        <input type="checkbox" onchange="handleOnchange(event) " ${el.status === 1 ? 'checked' : ''}/>
+        </div>
         <div class="item-cnt">
         <p class="para">${el.data.inputVal}</p>${el.data.showCompleteness}
         <span><em>${el.data.formatDate}</em></span> 
@@ -98,6 +105,24 @@ function renderLi(taskArr){
     });
 }
 
+function handleOnchange(e){
+    if(e.target.checked){
+        Tasks.map(el => {
+        if(e.target.closest('li').id === el.date){
+            el.status = 1;
+            el.data.showCompleteness = `<em class="com">✅completed</em>`;
+        }
+    })
+    }else{
+        Tasks.map(el => {
+        if(e.target.closest('li').id === el.date){
+            el.status = 0;
+            el.data.showCompleteness = '';
+        }
+    });
+    }
+    saveChanges();
+}
 
 let targetLi;
 addItem.addEventListener('click',handleAddItem);

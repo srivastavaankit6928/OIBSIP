@@ -12,10 +12,10 @@
         <div class="hero">
             <div class="section-1">
                 <div class="history">
-                    <input type="text" placeholder="0" class="historyValue" disabled="disabled">
+                    <input type="text" placeholder="0" class="historyValue" disabled>
                 </div>
                 <div class="result">
-                    <input type="text" placeholder="0" class="answer">
+                    <input type="text" placeholder="0" class="answer" disabled>
                 </div>
             </div>
 
@@ -41,7 +41,7 @@
                 <button class="opeartor" data-operator="/">/</button>
 
                 <button class="number-button" data-number="0">0</button>
-                <button onclick="result.value += '.'">.</button>
+                <button onclick="appendDot()">.</button>
                 <button class="two-column" id="enter">=</button>
             </div>
         </div>

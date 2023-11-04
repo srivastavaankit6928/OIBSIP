@@ -49,6 +49,7 @@ function showPassword() {
 		passwordInput.type = "password";
 	}
 }
+
 function showConPassword() {
 	const cPasswordInput = document.getElementById("cpassword");
 
