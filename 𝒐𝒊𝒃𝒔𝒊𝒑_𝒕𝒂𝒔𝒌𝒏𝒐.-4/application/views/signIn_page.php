@@ -20,10 +20,10 @@
                 <div class="fieldIcon">
                     <i class="fa-solid fa-lock-open"></i>
                 </div>
-                <input type="password" placeholder="Password" name="password" id="password" autocomplete="off"
+                <input type="password" placeholder="Password" name="password" id="inPassword" autocomplete="off"
                     value=<?= set_value('password'); ?>>
                 <div class="eyelash">
-                    <i class="fa-solid fa-eye-slash" onclick="showPassword()"></i>
+                    <i class="fa-solid fa-eye-slash" onclick="showInPassword()"></i>
                 </div>
             </div>
 

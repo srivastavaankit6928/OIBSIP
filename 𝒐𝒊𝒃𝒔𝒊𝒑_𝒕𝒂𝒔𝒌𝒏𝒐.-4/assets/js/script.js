@@ -50,6 +50,15 @@ function showPassword() {
 	}
 }
 
+function showInPassword() {
+	const inPasswordInput = document.getElementById("inPassword");
+	if (inPasswordInput.type === "password") {
+		inPasswordInput.type = "text";
+	} else {
+		inPasswordInput.type = "password";
+	}
+}
+
 function showConPassword() {
 	const cPasswordInput = document.getElementById("cpassword");
 
